@@ -6,7 +6,7 @@
     This module contains logger utilities such as filters
 
     :copyright: (c) 2016 by Mehdy Khoshnoody.
-    :license: GPLv2, see LICENSE for more details.
+    :license: GPLv3, see LICENSE for more details.
 """
 import logging
 from flask import request
