@@ -1,0 +1,34 @@
+{
+  "tree": {
+    "files": [
+      "manager.py", "Vagrantfile", "prepare.sh", "Dockerfile"
+    ],
+    "directories": [{
+      "name": "$name",
+      "tree": {
+        "files": [
+          "__init__.py", "factory.py", "config.py", "extensions.py"
+        ],
+        "directories": [
+          {
+            "name": "plugins",
+            "tree": {
+              "files": [
+                "__init__.py"
+              ],
+              "directories": []
+            }
+          },
+          {
+            "name": "utils",
+            "tree": {
+              "files": [
+                "__init__.py", "logger.py", "pagination.py", "security.py"
+              ],
+              "directories": []
+            }
+          }]
+      }
+    }]
+  }
+}
