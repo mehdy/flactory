@@ -4,19 +4,19 @@
     :copyright: (c) 2016 by Mehdy Khoshnoody.
     :license: GPLv3, see LICENSE for more details.
 """
-
+import os
 from distutils.core import setup
 
 setup(
     name='flactory',
-    version='0.1.0',
+    version='0.1.1',
     py_modules=['flactory'],
     install_requires=[
         'click',
-        'jinja2',
-        'flask'
+        'jinja2'
     ],
-    data_files=[('flactory', 'templates/*.*')],
+    data_files=[(d, [os.path.join(d,f) for f in files])
+                for d, folders, files in os.walk('templates')],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
