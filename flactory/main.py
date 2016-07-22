@@ -10,6 +10,8 @@
 
 import click
 
+from flactory.repository import pull
+
 
 @click.group()
 @click.version_option()
@@ -19,3 +21,7 @@ def main():
         Flactory makes creating large flask application easier
     """
     pass
+
+
+# registering sub commands and groups on application
+main.command()(pull)
