@@ -10,13 +10,11 @@ from distutils.core import setup
 setup(
     name='flactory',
     version='0.1.1',
-    py_modules=['flactory'],
+    packages=['flactory'],
     install_requires=[
         'click',
         'jinja2'
     ],
-    data_files=[(d, [os.path.join(d,f) for f in files])
-                for d, folders, files in os.walk('templates')],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -33,7 +31,7 @@ setup(
     keywords='flask project factory',
     entry_points='''
         [console_scripts]
-        flactory=flactory:main
+        flactory=flactory.main:main
     ''',
     url='https://github.com/mehdy/flactory',
     license='GPLv3',
