@@ -32,21 +32,15 @@ def check_repo(_, __, value):
     return url
 
 
-@click.option('--global', '-g',
-              is_flag=True,
-              default=False,
-              help="save the template globally")
 @click.argument('repo', nargs=1, callback=check_repo)
 def pull(**kwargs):
     """
         pull application templates
 
-        if you pass the global option it will pull it inside
-        $HOME/.flactory/templates
+        all templates will be pulled and saved inside $HOME/.flactory/templates
     """
     repo = kwargs['repo']
-    base_path = os.environ['HOME'] if kwargs['global'] else os.curdir
-    templates_path = os.path.join(base_path, '.flactory/templates')
+    templates_path = os.path.join(os.environ['HOME'], '.flactory/templates')
     template_path = os.path.join(templates_path,
                                  kwargs['repo'].netloc,
                                  kwargs['repo'].path[:-4])
