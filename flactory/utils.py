@@ -28,6 +28,10 @@ def mkdirs(path, mode=0o777):
 
 @contextmanager
 def inside_dir(path):
+    """
+        a context manager to run commands inside a directory
+    :param path: the directory you want to run commands inside it.
+    """
     old_path = os.path.abspath(os.curdir)
     os.chdir(path)
     yield
