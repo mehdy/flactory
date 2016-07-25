@@ -10,6 +10,7 @@
 
 import click
 
+from flactory.applications import app
 from flactory.repository import pull
 
 
@@ -23,5 +24,14 @@ def main():
     pass
 
 
+@main.group()
+def create():
+    """
+        Create applications and components from templates
+    """
+    pass
+
+
 # registering sub commands and groups on application
 main.command()(pull)
+create.command()(app)
