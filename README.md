@@ -20,9 +20,4 @@ when you installed flactory you can pull an application template from a git repo
 $ flactory pull https://github.com/mehdy/my-flask-app-template.git
 ```
 
-this will clone the project inside the `.flactory/templates` and you can only use it inside that directory.  
-if you want it to be cloned **globally** just pass the `-g` or `--global` option when you want to pull a template
-```
-$ flactory pull -g https://github.com/mehdy/my-flask-app-template.git
-```
-now it will clone the project inside the `$HOME/.flactory/templates`. and it's accessible from anywhere by the user whom `$HOME` belongs to.
+it'll clone the project inside the `$HOME/.flactory/templates`. and it's accessible from anywhere by the user whom `$HOME` belongs to.
