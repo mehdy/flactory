@@ -70,6 +70,13 @@ def check_template(ctx, _, value):
         # TODO: if not exist pull it automatically
         raise ctx.Abort()
 
+types = {
+    'int': int,
+    'bool': bool,
+    'str': str,
+    None: None
+}
+
 
 @click.option('--template', '-t', type=click.STRING,
               callback=check_template,
@@ -100,7 +107,19 @@ def app(**kwargs):
 
     state = manifest['state']
     for item in state:
-        state[item]['value'] = click.prompt(state[item]['prompt'])
+        if state[item]['type'] == 'confirm':
+            state[item]['value'] = click.confirm(
+                state[item]['prompt'],
+                default=state[item].get('value', False),
+                prompt_suffix=''
+            )
+        else:
+            state[item]['value'] = click.prompt(
+                state[item]['prompt'],
+                default=state[item].get('value'),
+                type=types[state[item].get('type')],
+                prompt_suffix=''
+            )
 
     # add other data to state
     state.update(**kwargs)
