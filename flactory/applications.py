@@ -105,8 +105,9 @@ def app(**kwargs):
     # add other data to state
     state.update(**kwargs)
 
-    for ctx, dirs, files in os.walk(template_dir):
-        with inside_dir(ctx.replace(template_dir, destination)):
+    entrypoint = os.path.join(template_dir, manifest['entrypoint'])
+    for ctx, dirs, files in os.walk(entrypoint):
+        with inside_dir(ctx.replace(entrypoint, destination)):
             for directory in dirs:
                 if directory.startswith('$'):
                     directory = state[directory[1:]]
