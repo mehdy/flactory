@@ -158,4 +158,10 @@ def app(**kwargs):
                 with open(item[:-4], 'w') as f:
                     f.write(template.render(**state))
 
-    # now everything has been created TODO: be more verbose
+    click.echo(
+        click.style(
+            'Project "' +
+            click.style(kwargs['name'], bold=True) +
+            '" has been created successfully! have fun :)',
+            fg='green')
+    )
