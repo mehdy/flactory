@@ -5,7 +5,7 @@
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
-BUILDDIR      = build
+BUILDDIR      = _build
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -223,3 +223,21 @@ dummy:
 	$(SPHINXBUILD) -b dummy $(ALLSPHINXOPTS) $(BUILDDIR)/dummy
 	@echo
 	@echo "Build finished. Dummy builder generates no files."
+
+.PHONY: gh-pages
+gh-pages:
+	cd .. && \
+	 git checkout gh-pages && \
+	 rm -rf * && \
+	 git checkout master docs && \
+	 cd docs && \
+	 make clean && \
+	 make html && \
+	 mv _build/html/* ../ && \
+	 mv _build/html/.nojekyll ../ && \
+	 cd .. && \
+	 rm -rf docs && \
+	 git add -A && \
+	 git commit -m "updated documents" && \
+	 git push && \
+	 git checkout master
