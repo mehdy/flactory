@@ -106,6 +106,18 @@ def app(**kwargs):
         return click.Abort()
 
     state = manifest['state']
+    excludes = manifest['excludes']
+    excluded_files = []
+    excluded_dirs = []
+
+    for item in excludes:
+        if click.confirm(item['prompt'], default=True, prompt_suffix=''):
+            if item['type'] == 'file':
+                excluded_files.append(item['value'])
+            else:
+                excluded_dirs.append(item['value'])
+
+    # TODO: handle states which are related to excludes
     for item in state:
         if state[item]['type'] == 'confirm':
             state[item]['value'] = click.confirm(
@@ -121,6 +133,7 @@ def app(**kwargs):
                 prompt_suffix=''
             )
 
+    # TODO: handle other related states
     # add other data to state
     state.update(**kwargs)
 
@@ -128,11 +141,15 @@ def app(**kwargs):
     for ctx, dirs, files in os.walk(entrypoint):
         with inside_dir(ctx.replace(entrypoint, destination)):
             for directory in dirs:
+                if directory in excluded_dirs:
+                    continue
                 if directory.startswith('$'):
                     directory = state[directory[1:]]
                 mkdirs(directory, mode=0o755)
 
             for item in files:
+                if item in excluded_files:
+                    continue
                 if item.startswith('$'):
                     item = state[item[1:]]
                 with open(os.path.join(ctx, item)) as f:
