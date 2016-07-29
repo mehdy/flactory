@@ -31,7 +31,7 @@
 
   
     <link rel="top" title="Flactory 0.1.1 documentation" href="index.html"/>
-        <link rel="prev" title="Welcome to Flactory’s documentation!" href="index.html"/> 
+        <link rel="prev" title="Welcome to Flactory!" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,6 +83,7 @@
                 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-your-first-app">Create your first App</a></li>
 </ul>
 </li>
 </ul>
@@ -139,6 +140,36 @@ installed pip properly and execute to install or upgrade it.:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="create-your-first-app">
+<h2>Create your first App<a class="headerlink" href="#create-your-first-app" title="Permalink to this headline">¶</a></h2>
+<p>flactory uses templates to generate application code bases. you can create
+and use your own template. but for the purpose of this document we&#8217;ll be
+using <a class="reference external" href="https://github.com/mehdy/flarge">Flarge</a> ! a template which I
+created for my own applications.</p>
+<p>So first of all we need to get the template to be available to use.
+In order to do that run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ flactory pull mehdy/flarge
+</pre></div>
+</div>
+<p>And you should see this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>couldn&#39;t find [github.com] mehdy/flarge locally! trying to pull it...
+[github.com] mehdy/flarge has been pulled successfully!
+</pre></div>
+</div>
+<p>It means flactory has pulled the template (via git) and now it&#8217;s available to
+use.</p>
+<p>Now for creating an application from this template just run:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ flactory create app
+</pre></div>
+</div>
+<p>it will ask you to select the template you want, so answer it with <code class="docutils literal"><span class="pre">mehdy/flarge</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">which</span> <span class="n">template</span> <span class="n">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">use</span><span class="p">:</span> <span class="n">mehdy</span><span class="o">/</span><span class="n">flarge</span>
+</pre></div>
+</div>
+<p>and then it will ask you some other questions like the name and version of
+your project and the path you want the project to be created in. answer the
+questions and it&#8217;ll create and configure you your project from the template.</p>
+</div>
 </div>
 
 
@@ -149,7 +180,7 @@ installed pip properly and execute to install or upgrade it.:</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to Flactory’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Flactory!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
