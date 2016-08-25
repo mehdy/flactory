@@ -24,6 +24,7 @@ def mkdirs(path, mode=0o777):
 
     if not os.path.isdir(path):
         os.mkdir(path, mode)
+    return path
 
 
 @contextmanager

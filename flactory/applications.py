@@ -17,6 +17,7 @@ except ImportError:
     from urlparse import urlparse
 
 import click
+from jinja2 import Template
 
 from flactory.utils import mkdirs, inside_dir
 
@@ -29,7 +30,7 @@ def check_name(ctx, param, value):
     :param value: the parameter value
     :return:
     """
-    regex = re.compile('^[^0-9]\w*')
+    regex = re.compile(r'^[a-zA-Z_]*')
     if regex.match(value):
         return value
     while True:
@@ -55,7 +56,7 @@ def check_template(ctx, _, value):
     """
     if not value:
         # TODO: get list and show
-        raise ctx.Abort()
+        raise ctx.abort()
     else:
         url = urlparse(value)
         if not url.netloc:
@@ -68,7 +69,9 @@ def check_template(ctx, _, value):
         if os.path.isdir(path):
             return path
         # TODO: if not exist pull it automatically
-        raise ctx.Abort()
+        repr_name = click.style("[{}] {}".format(url.netloc, url.path[:-4]),
+                                bold=True)
+        raise ctx.fail(repr_name + " doesn't exist.")
 
 types = {
     'int': int,
@@ -89,7 +92,8 @@ types = {
               prompt="what is your starting version")
 @click.option('--destination', '-d', type=click.Path(),
               default='.',
-              callback=lambda _, __, value: mkdirs(value, mode=0o755),
+              callback=lambda _, __, value: mkdirs(
+                  os.path.abspath(value), mode=0o755),
               prompt="where do you want to create your project")
 def app(**kwargs):
     """
@@ -111,7 +115,7 @@ def app(**kwargs):
     excluded_dirs = []
 
     for item in excludes:
-        if click.confirm(item['prompt'], default=True, prompt_suffix=''):
+        if not click.confirm(item['prompt'], default=True, prompt_suffix=' '):
             if item['type'] == 'file':
                 excluded_files.append(item['value'])
             else:
@@ -123,23 +127,25 @@ def app(**kwargs):
             state[item]['value'] = click.confirm(
                 state[item]['prompt'],
                 default=state[item].get('value', False),
-                prompt_suffix=''
+                prompt_suffix=' '
             )
         else:
             state[item]['value'] = click.prompt(
                 state[item]['prompt'],
                 default=state[item].get('value'),
                 type=types[state[item].get('type')],
-                prompt_suffix=''
+                prompt_suffix=' '
             )
 
     # TODO: handle other related states
     # add other data to state
     state.update(**kwargs)
-
+    regex = re.compile('\$[a-zA-Z_]*')
     entrypoint = os.path.join(template_dir, manifest['entrypoint'])
     for ctx, dirs, files in os.walk(entrypoint):
-        with inside_dir(ctx.replace(entrypoint, destination)):
+        with inside_dir(
+                regex.sub(lambda val: state[val.group()[1:]],
+                          ctx.replace(entrypoint, destination))):
             for directory in dirs:
                 if directory in excluded_dirs:
                     continue
@@ -148,7 +154,7 @@ def app(**kwargs):
                 mkdirs(directory, mode=0o755)
 
             for item in files:
-                if item in excluded_files:
+                if item[:-4] in excluded_files:
                     continue
                 if item.startswith('$'):
                     item = state[item[1:]]
