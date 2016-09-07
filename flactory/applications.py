@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-    .applications
-    ~~~~~~
+    applications
+    ~~~~~~~~~~~~
     
-    This module
+    This module implements create apps function
     
     :copyright: (c) 2016 by Mehdy Khoshnoody.
     :license: GPLv3, see LICENSE for more details.
