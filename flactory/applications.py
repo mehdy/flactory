@@ -19,6 +19,7 @@ except ImportError:
 import click
 from jinja2 import Template
 
+from flactory.state import parse_manifest
 from flactory.utils import mkdirs, inside_dir
 
 
@@ -73,13 +74,6 @@ def check_template(ctx, _, value):
                                 bold=True)
         raise ctx.fail(repr_name + " doesn't exist.")
 
-types = {
-    'int': int,
-    'bool': bool,
-    'str': str,
-    None: None
-}
-
 
 @click.option('--template', '-t', type=click.STRING,
               callback=check_template,
@@ -109,35 +103,8 @@ def app(**kwargs):
         # TODO: show error that template is invalid
         return click.Abort()
 
-    state = manifest['state']
-    excludes = manifest['excludes']
-    excluded_files = []
-    excluded_dirs = []
+    state, excluded_dirs, excluded_files = parse_manifest(manifest)
 
-    for item in excludes:
-        if not click.confirm(item['prompt'], default=True, prompt_suffix=' '):
-            if item['type'] == 'file':
-                excluded_files.append(item['value'])
-            else:
-                excluded_dirs.append(item['value'])
-
-    # TODO: handle states which are related to excludes
-    for item in state:
-        if state[item]['type'] == 'confirm':
-            state[item]['value'] = click.confirm(
-                state[item]['prompt'],
-                default=state[item].get('value', False),
-                prompt_suffix=' '
-            )
-        else:
-            state[item]['value'] = click.prompt(
-                state[item]['prompt'],
-                default=state[item].get('value'),
-                type=types[state[item].get('type')],
-                prompt_suffix=' '
-            )
-
-    # TODO: handle other related states
     # add other data to state
     state.update(**kwargs)
     regex = re.compile('\$[a-zA-Z_]*')
